@@ -22,4 +22,4 @@ ll
 cat data.txt | grep "millionth"
 ```
 
-Returns: `millionth	dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc`
+Returns: `millionth dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc`
