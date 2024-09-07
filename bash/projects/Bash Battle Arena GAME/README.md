@@ -13,3 +13,5 @@ The game is structured in levels, starting at Level 1, with the difficulty incre
 # Repo Structure
 
 This repository includes 15 levels, each paired with its respective solution. While solutions are provided, it's strongly encouraged to solve each challenge independently before referring to the solutions. This approach will maximize your learning and help you develop strong Bash scripting skills.
+
+Feel free to contribute! If you have any suggestions for improvements or more efficient solutions, you're welcome to submit a pull request or raise an issue. Your input is greatly appreciated! 🙏
