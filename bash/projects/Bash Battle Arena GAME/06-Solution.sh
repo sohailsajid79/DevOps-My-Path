@@ -16,7 +16,7 @@ count_file_lines "$1"
 ### Grant executable permissions
 # chmod +x ./06-Solution.sh
 
-### Test Case #2:
+### Test Case #1:
 # ❯ ./06-Solution.sh
 # No file provided.
 
