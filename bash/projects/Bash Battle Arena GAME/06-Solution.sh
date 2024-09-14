@@ -14,7 +14,7 @@ count_file_lines(){
 count_file_lines "$1"
 
 ### Grant executable permissions
-# chmod +x ./script_name.sh
+# chmod +x ./06-Solution.sh
 
 ### Test Case #2:
 # ❯ ./06-Solution.sh
