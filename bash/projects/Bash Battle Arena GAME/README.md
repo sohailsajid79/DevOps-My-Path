@@ -8,10 +8,10 @@ Players are tasked with completing various "missions" 🛠️ using Bash scripts
 
 # Game Structure
 
-The game is structured in levels, starting at Level 1, with the difficulty increasing as you advance through each stage. Every 5 levels, you face a Boss Battle 💥 designed to challenge and reinforce the skills and knowledge you've gained from the previous levels.
+The game is structured in levels, starting at Level 1, with the difficulty increasing as you advance through each Level. Every 5 levels, you face a Boss Battle 💥 designed to challenge and reinforce the skills and knowledge you've gained from the previous levels.
 
 # Repo Structure
 
-This repository includes 15 levels, each paired with its respective solution. While solutions are provided, it's strongly encouraged to solve each challenge independently before referring to the solutions. This approach will maximize your learning and help you develop strong Bash scripting skills.
+This repository contains 15 levels, each paired with its respective solution. While I will provide my solutions, I strongly encourage you to attempt each challenge on your own before referring to them, as my solution may differ from yours! This approach will maximise your learning and help you develop strong Bash scripting skills.
 
 Feel free to contribute! If you have any suggestions for improvements or more efficient solutions, you're welcome to submit a pull request or raise an issue. Your input is greatly appreciated! 🙏
