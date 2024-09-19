@@ -36,6 +36,6 @@ resource "aws_instance" "nginx" {
               EOF
 
   tags = {
-    Name = "nginx-sg"
+    Name = "ec2-nginx"
   }
 }
