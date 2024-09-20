@@ -1,3 +1,8 @@
+resource "aws_key_pair" "key_pair" {
+  key_name   = "aws-key"
+  public_key = file("./aws-key.pem")
+}
+
 resource "aws_security_group" "sg" {
   name = "nginx-sg"
 
@@ -5,6 +10,14 @@ resource "aws_security_group" "sg" {
     description = "allow http traffic"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "allow ssh access"
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
