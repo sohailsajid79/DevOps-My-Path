@@ -6,6 +6,6 @@ variable "ami_id" {
   type = string
 }
 
-variable "key_pair" {
-  default = ""
+variable "key_name" {
+  type = string
 }
