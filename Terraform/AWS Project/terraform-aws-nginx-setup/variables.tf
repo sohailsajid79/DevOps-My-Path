@@ -14,5 +14,6 @@ variable "instance_type" {
 }
 
 variable "key_pair" {
-  type = string
+  type    = string
+  default = "ssh-keypair"
 }
