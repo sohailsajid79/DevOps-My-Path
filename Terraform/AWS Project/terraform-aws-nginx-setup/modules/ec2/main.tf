@@ -1,9 +1,37 @@
-resource "aws_key_pair" "key_pair" {
-  key_name   = "aws-key"
-  public_key = file("./aws-key.pem")
+resource "aws_vpc" "vnet" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.vnet.id
+}
+
+resource "aws_subnet" "public" {
+  vpc_id     = aws_vpc.vnet.id
+  cidr_block = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.vnet.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
+  tags = {
+    Name = "public-route-table"
+  }
+}
+
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
 }
 
 resource "aws_security_group" "sg" {
+  vpc_id = aws_vpc.vnet.id
   name = "nginx-sg"
 
   ingress {
@@ -34,12 +62,14 @@ resource "aws_security_group" "sg" {
   }
 }
 
-resource "aws_instance" "nginx" {
+resource "aws_instance" "ec2" {
   ami           = var.ami_id
   instance_type = var.instance_type
-  key_name      = var.key_pair
+  key_name      = var.key_name
 
-  security_groups = [aws_security_group.sg.id]
+  vpc_security_group_ids = [aws_security_group.sg.id]
+
+  subnet_id = aws_subnet.public.id
 
   user_data = <<-EOF
               #!/bin/bash
@@ -47,8 +77,4 @@ resource "aws_instance" "nginx" {
               sudo apt-get install -y nginx
               sudo systemctl start nginx
               EOF
-
-  tags = {
-    Name = "ec2-nginx"
-  }
 }
