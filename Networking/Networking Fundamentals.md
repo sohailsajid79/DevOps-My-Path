@@ -18,6 +18,7 @@
    - [DNS Resolution Process](#dns-resolution-process)
    - [Common DNS Records](#common-dns-records)
    - [DNS Troubleshooting Tools](#dns-troubleshooting-tools)
+4. [Common Ports](#common-ports)
 
 ## OSI Model Overview
 
@@ -235,3 +236,31 @@ ping footballfantasy.com
 - `ipconfig /release`: when we need to drop the current network configuration to force a new IP address lease from the DHCP server.
 
 - `ipconfig /renew`: after releasing the IP address with ipconfig /release, we need to renew the request for a new IP address from the DHCP server.
+
+## Common Ports
+
+| Port Number | Protocol   | Description                                                 |
+| ----------- | ---------- | ----------------------------------------------------------- |
+| 20          | FTP        | File Transfer Protocol (data transfer)                      |
+| 21          | FTP        | File Transfer Protocol (command/control)                    |
+| 22          | SSH        | Secure Shell (secure remote login)                          |
+| 23          | Telnet     | Unencrypted remote login                                    |
+| 25          | SMTP       | Simple Mail Transfer Protocol (email sending)               |
+| 53          | DNS        | Domain Name System (name resolution)                        |
+| 67/68       | DHCP       | Dynamic Host Configuration Protocol (IP address assignment) |
+| 80          | HTTP       | Hypertext Transfer Protocol (web browsing)                  |
+| 110         | POP3       | Post Office Protocol (retrieving email)                     |
+| 143         | IMAP       | Internet Message Access Protocol (retrieving email)         |
+| 443         | HTTPS      | Hypertext Transfer Protocol Secure (secure web browsing)    |
+| 445         | SMB        | Server Message Block (file sharing in Windows)              |
+| 3389        | RDP        | Remote Desktop Protocol (remote desktop)                    |
+| 389         | LDAP       | Lightweight Directory Access Protocol (directory services)  |
+| 636         | LDAPS      | Secure LDAP (encrypted directory services)                  |
+| 137-139     | NetBIOS    | NetBIOS services over TCP/IP (older file sharing)           |
+| 161/162     | SNMP       | Simple Network Management Protocol (network management)     |
+| 69          | TFTP       | Trivial File Transfer Protocol (simple, no authentication)  |
+| 2049        | NFS        | Network File System (file sharing in Unix/Linux)            |
+| 3306        | MySQL      | MySQL database server                                       |
+| 5432        | PostgreSQL | PostgreSQL database server                                  |
+| 8080        | HTTP       | Alternative HTTP port (used for testing/development)        |
+| 5900        | VNC        | Virtual Network Computing (remote desktop sharing)          |
