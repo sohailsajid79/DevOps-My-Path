@@ -10,7 +10,10 @@
 8. [Docker Networking](#docker-networking)
 9. [Docker Registry](#docker-registry)
 10. [Docker Workflow](#docker-workflow)
-11. [Scaling Containers](#scaling-containers)
+11. [AWS ECR](#aws-ecr)
+12. [Azure ACR](#azure-acr)
+13. [Google AR](#google-ar)
+14. [Scaling Containers](#scaling-containers)
 
 ## Traditional Approach: Virtual Machines (Old Solution)
 
@@ -303,6 +306,59 @@ docker pull localhost:5000/<image_name>
 2. **Pull Image**: Download the container image from the registry.
 3. **Run Image**: Start a container based on the image.
 
+### Comparison of Docker Hub, ECR, ACR, AR
+
+| Feature             | Docker Hub                             | AWS ECR                            | Azure ACR                            | Google Artifact Registry           |
+| ------------------- | -------------------------------------- | ---------------------------------- | ------------------------------------ | ---------------------------------- |
+| **Registry Type**   | Public & Private                       | Private                            | Private                              | Public & Private                   |
+| **Authentication**  | Docker Hub account                     | AWS IAM                            | AAD                                  | Google Cloud IAM                   |
+| **Integration**     | Docker CLI, Kubernetes, GitHub Actions | ECS, EKS, CodePipeline             | AKS, Azure DevOps                    | GKE, Cloud Run, Cloud Build        |
+| **Geo-replication** | No                                     | No                                 | Yes                                  | Yes                                |
+| **Pricing**         | Free for public, paid for private      | Based on storage and data transfer | Based on storage and geo-replication | Based on storage and data transfer |
+
+## AWS ECR
+
+![Amazon Elastic Container Registry](./assets/Diagram_Amazon-ECR.png)
+Source: [AWS ECR](https://aws.amazon.com/ecr/)
+
+The Docker image is pushed to Amazon ECR, which securely stores and manages Docker container images. Amazon ECR simplifies the process of storing, securing, and managing container images by offering features like encryption, access control, and lifecycle management. It integrates seamlessly with ECS (Elastic Container Service) and EKS (Elastic Kubernetes Service), as well as on-premises environments, providing a consistent and scalable platform for deploying containerised applications.
+
+## Azure ACR
+
+![Azure Container Registry](./assets/Diagram_Azure-ACR.png)
+Source: [Azure ACR](https://azure.microsoft.com/en-us/products/container-registry)
+
+The diagram illustrates how Azure Container Registry (ACR) integrates into a multi-region deployment with AKS and Continuous Deployment (CD) pipelines, using geo-replication for efficient and reliable image distribution.
+
+Key Steps:
+
+- **Developer**: Creates and pushes a container image to ACR.
+- **ACR**: Stores the image in East US and replicates it to West Europe using geo-replication, improving availability and reducing latency.
+- **Continuous Deployment (CD)**: Pipelines (e.g., Azure DevOps) pull images from ACR and automatically deploy them to various environments.
+- **Azure Kubernetes Service**: Deploys the container image to AKS clusters in both East US and West Europe.
+
+Benefits:
+
+- **Global Availability**: Geo-replication ensures images are accessible across multiple regions.
+- **High Availability**: Applications are deployed across regions, ensuring redundancy and minimising downtime.
+- **Fast Deployments**: Localised ACR replication speeds up image retrieval and deployment times.
+
+## Google AR
+
+![Google Artifact Registry](./assets/Diagram_Google-AR.png)
+
+Source: [Joey Whelan Tech Tips](https://joeywhelan.blogspot.com/2021/06/google-cloud-devops.html)
+
+A developer pushes code to GitHub, Cloud Build is triggered to create and push a Docker image to Google Artifact Registry. The Docker image is then deployed to Cloud Run, a serverless platform for running containerised applications. The process automates the deployment of new code changes to a production environment using Google Cloud services.
+
+Benefits:
+
+- **Multi-format Support**: Supports not just Docker images but also other artifacts like npm, Maven, and Python packages.
+- **Granular Permissions**: Provides fine-grained, repository-level permissions for better control over access to specific artifacts.
+- **Regional Repositories**: Allows storing artifacts in specific regions, reducing latency and enabling faster retrieval.
+- **Security**: Integrated with Google Cloud IAM for permission management and includes advanced features like vulnerability scanning.
+- **Seamless Integration**: Works with Google Kubernetes Engine (GKE), Cloud Run, and Cloud Build for automated deployment and orchestration.
+
 ## Scaling Containers:
 
-- Use **Kubernetes** as an orchestration tool to scale and manage multiple containers.
+- Use [**Kubernetes**](https://kubernetes.io/docs/home/) as an orchestration tool to scale and manage multiple containers.
