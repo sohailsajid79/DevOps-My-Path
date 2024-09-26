@@ -326,6 +326,7 @@ The Docker image is pushed to Amazon ECR, which securely stores and manages Dock
 ## Azure ACR
 
 ![Azure Container Registry](./assets/Diagram_Azure-ACR.png)
+
 Source: [Azure ACR](https://azure.microsoft.com/en-us/products/container-registry)
 
 The diagram illustrates how Azure Container Registry (ACR) integrates into a multi-region deployment with AKS and Continuous Deployment (CD) pipelines, using geo-replication for efficient and reliable image distribution.
