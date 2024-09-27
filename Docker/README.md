@@ -190,7 +190,14 @@ The `depends_on` is used to define the order in which services are started. Howe
      ```
 
 6. **Use Slim Versions of Images**:
+
    - Use official "slim" versions of images when possible (e.g., `python:3.9-slim`).
+
+7. **Layer Caching and Optimised Push**:
+
+   - Docker uses a `layered filesystem` where each instruction in a Dockerfile creates a new image layer.
+   - When pushing a Docker image to a registry, `only the modified layers are uploaded`, saving time and bandwidth. Unchanged layers are reused from the previous version.
+   - The optimisation reduces upload time and storage space, especially in continuous integration pipelines.
 
 ## Docker Networking
 
