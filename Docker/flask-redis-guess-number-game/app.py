@@ -23,9 +23,15 @@ def game():
 
         if guess == number:
             redis_client.delete('random_number')
-            return f"Congratulations! You guessed the number {number} correctly!"
+            return f"""
+                <p>Congratulations! You guessed the number {number} correctly!</p>
+                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+            """
         else:
-            return f"Try again! {guess} is not the correct number."
+            return f"""
+                <p>Try again! {guess} is not the correct number.</p>
+                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+            """
 
     else:
         # generate and store random int in redis if not already set
@@ -36,13 +42,17 @@ def game():
                 Guess a number between 1 and 10: 
                 <input type="number" name="guess" min="1" max="10">
                 <input type="submit" value="Submit">
+                <p><a href="{{ url_for('welcome') }}">Back to Home</a></p>
             </form>
         '''
 
 @app.route('/count')
 def count():
     visits = redis_client.get('visit_count')
-    return f"Total visits: {visits}"
+    return f"""
+        <p>Total visits: {visits}</p>
+        <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+    """
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002)
