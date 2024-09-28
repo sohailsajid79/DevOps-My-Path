@@ -1,58 +1,58 @@
-from flask import Flask, request, render_template_string, redirect, url_for
-import os
+from flask import Flask, request, render_template, redirect, url_for
 import redis
+import os
 import random
 
 app = Flask(__name__)
 
-redis_host = os.getenv('REDIS_HOST', 'localhost')
+redis_host = os.getenv('REDIS_HOST', 'redis')
 redis_port = os.getenv('REDIS_PORT', 6379)
-redis_password = os.getenv('REDIS_PASSWORD', None)
-
-r = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_password, decode_responses=True)
-
-if not r.get('random_number'):
-    r.set('random_number', random.randint(1, 10))
-
-if not r.get('visit_count'):
-    r.set('visit_count', 0)
+redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
 
 @app.route('/')
-def index():
-    # =+ visit count
-    r.incr('visit_count')
-    return render_template_string('''
-        <h1>Welcome to Guess the Number Game!</h1>
-        <p>Total Visits: {{ visit_count }}</p>
-        <p><a href="{{ url_for('game') }}">Start the Game</a></p>
-    ''', visit_count=r.get('visit_count'))
+def welcome():
+    # track visits =+
+    visits = redis_client.incr('visit_count')
+    return f"Welcome to the Guess the Number Game! Total visits: {visits}. Click <a href='/game'>here</a> to start."
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
-    random_number = int(r.get('random_number'))
-    message = ""
     if request.method == 'POST':
-        guess = int(request.form.get('guess'))
-        if guess == random_number:
-            message = "Congratulations! You've guessed the right number!"
-            # reset random number
-            r.set('random_number', random.randint(1, 10))
+        guess = int(request.form['guess'])
+        number = int(redis_client.get('random_number'))
+
+        if guess == number:
+            redis_client.delete('random_number')
+            return f"""
+                <p>Congratulations! You guessed the number {number} correctly!</p>
+                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+            """
         else:
-            message = "Try again!"
-    return render_template_string('''
-        <h1>Guess the Number!</h1>
-        <p>{{ message }}</p>
-        <form method="POST">
-            <label>Enter a number between 1 and 10:</label>
-            <input type="number" name="guess" min="1" max="10">
-            <input type="submit" value="Submit Guess">
-        </form>
-        <p><a href="{{ url_for('index') }}">Back to Home</a></p>
-    ''', message=message)
+            return f"""
+                <p>Try again! {guess} is not the correct number.</p>
+                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+            """
+
+    else:
+        # generate and store random int in redis if not already set
+        if not redis_client.exists('random_number'):
+            redis_client.set('random_number', random.randint(1, 10))
+        return '''
+            <form method="POST">
+                Guess a number between 1 and 10: 
+                <input type="number" name="guess" min="1" max="10">
+                <input type="submit" value="Submit">
+                <p><a href="{{ url_for('welcome') }}">Back to Home</a></p>
+            </form>
+        '''
 
 @app.route('/count')
 def count():
-    return f"Total Visits: {r.get('visit_count')}"
+    visits = redis_client.get('visit_count')
+    return f"""
+        <p>Total visits: {visits}</p>
+        <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
+    """
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5002)
