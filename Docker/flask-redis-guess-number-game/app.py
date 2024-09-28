@@ -13,46 +13,37 @@ redis_client = redis.StrictRedis(host=redis_host, port=redis_port, decode_respon
 def welcome():
     # track visits =+
     visits = redis_client.incr('visit_count')
-    return f"Welcome to the Guess the Number Game! Total visits: {visits}. Click <a href='/game'>here</a> to start."
+    return render_template('welcome.html', visits=visits)
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
     if request.method == 'POST':
-        guess = int(request.form['guess'])
-        number = int(redis_client.get('random_number'))
+        try:
+            guess = int(request.form['guess'])
+            number = int(redis_client.get('random_number'))
+        except (ValueError, TypeError):
+            message = "Invalid input. Please enter a number between 1 and 10."
+            return render_template('game.html', message=message)
 
         if guess == number:
             redis_client.delete('random_number')
-            return f"""
-                <p>Congratulations! You guessed the number {number} correctly!</p>
-                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
-            """
+            message = f"Congratulations! You guessed the number {number} correctly!"
+            return render_template('game.html', message=message)
         else:
-            return f"""
-                <p>Try again! {guess} is not the correct number.</p>
-                <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
-            """
+            message = f"Try again! {guess} is not the correct number. The correct number is {number}"
+            
+            return render_template('game.html', message=message)
 
     else:
-        # generate and store random int in redis if not already set
+        # generate and store random number in redis if not already set
         if not redis_client.exists('random_number'):
             redis_client.set('random_number', random.randint(1, 10))
-        return '''
-            <form method="POST">
-                Guess a number between 1 and 10: 
-                <input type="number" name="guess" min="1" max="10">
-                <input type="submit" value="Submit">
-                <p><a href="{{ url_for('welcome') }}">Back to Home</a></p>
-            </form>
-        '''
+        return render_template('game.html')
 
 @app.route('/count')
 def count():
     visits = redis_client.get('visit_count')
-    return f"""
-        <p>Total visits: {visits}</p>
-        <p><a href="{{{{ url_for('welcome') }}}}">Back to Home</a></p>
-    """
+    return render_template('count.html', visits=visits)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002)
