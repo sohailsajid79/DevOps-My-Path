@@ -36,9 +36,15 @@
 ## Docker Solution: Containers (New Solution)
 
 - **Baseline**: Hardware (CPU, RAM, Disk) + OS
+
   - **Docker Engine**:
+
     - Instead of virtualising the hardware like VMs, Docker virtualises the host OS, allowing containers to share the same OS kernel while running in isolated environments.
     - This makes containers faster, more lightweight, and efficient compared to VMs.
+
+    ![container-illustration](./assets/container-illustration.png)
+
+    Source: Nasiullha Chaudhari
 
 ## Key Docker Concepts
 
