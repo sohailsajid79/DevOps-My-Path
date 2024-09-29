@@ -8,7 +8,7 @@ This is a simple web-based guessing game built using Flask and Redis. The user i
 
 ## Setup
 
-To run the application, you'll need Docker Desktop and Docker Compose installed.
+To run the application, you will need Docker Desktop and Docker Compose installed.
 
 ### Clone the Repository
 
