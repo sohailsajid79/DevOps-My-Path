@@ -70,39 +70,99 @@ Handles end-to-end communication and is responsible for the delivery of data pac
 
 #### IP Addressing
 
-IPv4: sliced into network | host
+IP addresses provide unique identifiers for devices on a network. There are two types of IP addressing: **IPv4** and **IPv6**.
 
-- 4 groups of 8 bits (octets) for a total of 32-bits e.g. `192.168.1.1`
+**IPv4**: Consists of four 8-bit groups (octets) for a total of 32 bits, for example, `123.89.46.72`.
 
-IPv6: next gen
+![ipv4](./assets/ipv4.png)
 
-- 8 groups of 4x hexadecimal digits totaling 128-bit e.g. `2001:0db8:85a3:0000:0000:8a2e:0370:7334`
-- Compressed version: `2001:db8:85a3::8a2e:370:7334`
+**IPv6**: Uses 128 bits in total, divided into eight groups of 4 hexadecimal digits, for example, `2001:0db8:85a3:0000:0000:8a2e:0370:7334`.
+
+- **Compressed Version**: `2001:db8:85a3::8a2e:370:7334`
+
+##### IP Classes
+
+IP addresses are divided into classes based on the size of the network. These classes help manage IP address allocation efficiently.
+
+| **Class** | **Range**                   | **Default Subnet Mask**   |
+| --------- | --------------------------- | ------------------------- |
+| **A**     | 1.0.0.0 - 126.255.255.255   | 255.0.0.0                 |
+| **B**     | 128.0.0.0 - 191.255.255.255 | 255.255.0.0               |
+| **C**     | 192.0.0.0 - 223.255.255.255 | 255.255.255.0             |
+| **D**     | 224.0.0.0 - 239.255.255.255 | (Multicast)               |
+| **E**     | 240.0.0.0 - 255.255.255.255 | (Reserved for future use) |
+
+##### Private IP Address Ranges (RFC1918)
+
+These ranges are reserved for private networks and are not routable on the public internet.
+
+| IP Range                      | CIDR Notation  | Total IP Addresses   |
+| ----------------------------- | -------------- | -------------------- |
+| 10.0.0.0 – 10.255.255.255     | 10.0.0.0/8     | 16,777,216 addresses |
+| 172.16.0.0 – 172.31.255.255   | 172.16.0.0/12  | 1,048,576 addresses  |
+| 192.168.0.0 – 192.168.255.255 | 192.168.0.0/16 | 65,536 addresses     |
+
+##### Public vs. Private IP Address Ranges
+
+| Class | Range                     | Default Subnet Mask | Private IP Range              | Public IP Range                                          | Special Use Case               |
+| ----- | ------------------------- | ------------------- | ----------------------------- | -------------------------------------------------------- | ------------------------------ |
+| A     | 1.0.0.0 - 126.255.255.255 | 255.0.0.0           | 10.0.0.0 - 10.255.255.255     | 1.0.0.0 - 9.255.255.255, 11.0.0.0 - 126.255.255.255      | `127.0.0.1` (Loopback Address) |
+| B     | 128.0.0.0 - 191.255.0.0   | 255.255.0.0         | 172.16.0.0 - 172.31.255.255   | 128.0.0.0 - 172.15.255.255, 172.32.0.0 - 191.255.255.255 |                                |
+| C     | 192.0.0.0 - 223.255.255.0 | 255.255.255.0       | 192.168.0.0 - 192.168.255.255 | 192.0.0.0 - 192.167.255.255, 192.169.0.0 - 223.255.255.0 |                                |
+
+##### Binary to Decimal Conversion Example
+
+Given the IP address: **11000000.10101000.00000001.00010101**  
+This translates to **192.168.1.21** in decimal.
+
+| Octet | Binary Value | Decimal Value |
+| ----- | ------------ | ------------- |
+| 1st   | 11000000     | 192           |
+| 2nd   | 10101000     | 168           |
+| 3rd   | 00000001     | 1             |
+| 4th   | 00010101     | 21            |
+
+##### Decimal to Binary Conversion Example
+
+To convert **192.168.1.21** to binary:
+
+| Decimal Octet | Binary Value |
+| ------------- | ------------ |
+| 192           | 11000000     |
+| 168           | 10101000     |
+| 1             | 00000001     |
+| 21            | 00010101     |
+
+![sunny subnetting table](./assets/sunny%20subnetting%20table.png)
+Source: Sunny Classroom - YouTube
+
+This is a subnetting table that helps simplify the process of calculating subnets, hosts, and subnet masks in IP addressing. It is often used to break down IP networks into smaller sub-networks (subnets) for efficient IP address management.
 
 #### Subnetting
 
 Subnetting divides a large network into smaller sub-networks (subnets) to helps manage IP address allocation more efficiently and controls network traffic.
 
-Analogy 🥳 - think of subnetting like cutting a large birthday cake into smaller slices so everyone at the party can have a piece.
+- **Cake**: The large network is like a big birthday cake.
+- **Cutting the Cake**: Subnetting is like slicing the cake into smaller pieces so that each guest (device) gets a portion (IP address).
+- **Slices**: Each subnet is a slice of the cake, where the size of the slice is determined by how many devices need to be in that subnet.
+- **Efficient Distribution**: Subnetting prevents overcrowding of some network parts and underutilization of others.
+- **Traffic Control**: By organizing the cake into slices, you ensure that each device stays within its own subnet, preventing network congestion.
 
-**Cake 🎂**: The cake represents the large network, and everyone at the party (users/devices) needs a slice (IP address) from it.
+##### Subnet Mask and CIDR
 
-**Cutting the Cake 🔪**: Just as you divide the cake into equal-sized slices, subnetting divides the larger network (the cake) into smaller subnets, each with a portion of the IP addresses.
+For example, the IP address `192.168.1.0` with a default subnet mask `255.255.255.0`:
 
-**Slices 🍰**: Each slice of cake represents a subnet. Each subnet has its own defined number of IP addresses, just like each slice has a certain size. You can make smaller or larger slices based on how many guests (devices) need to be accommodated in each subnet.
-
-**Efficient Distribution 🧳**: If you don’t cut the cake (subnet), some guests might get too much cake, and some might get none. Similarly, without subnetting, IP addresses might be inefficiently used, with some parts of the network overcrowded and others underutilised.
-
-**Controlling Traffic 🚦**: By organising the cake into slices, you ensure that each guest stays in their area and doesn't take extra cake from other slices, just like subnets control network traffic within their own space to prevent congestion.
-
-In both cases, subnetting (cutting the cake) helps distribute resources efficiently and ensure everyone gets their share.
-
-An IP address `192.168.1.0` with a default subnet mask `255.255.255.0`:
-
-- The first three octets (`255.255.255`) represent the network part. The last octet (0) represents the host part. The CIDR notation for this would be `192.168.1.0/24`.
+- The first three octets (`255.255.255`) represent the network part, and the last octet (`0`) represents the host part. The CIDR notation for this would be `192.168.1.0/24`.
 
 - The /24 subnet mask in binary is:
-  `11111111.11111111.11111111.00000000` - the first 24 bits are for the network, the remaining 8 bits are for the host.
+  `11111111.11111111.11111111.00000000` — The first 24 bits represent the network, while the remaining 8 bits are for hosts.
+
+Here’s how subnet masks allow for varying IP ranges:
+
+![Subnet Mask Table](./assets/subnet-mask-table.png)
+Source: CoderCo
+
+This table provides a visual breakdown of how the subnet mask impacts the number of available subnets and hosts in each network.
 
 #### NAT
 
@@ -120,11 +180,11 @@ Types of NAT:
 
 ### Data Link
 
-**Responsible for node-to-node data transfer.**
+**Responsible for node-to-node data transfer.** It provides error detection and handling, as well as managing how data is framed for transmission.
 
-**MAC Address**: A unique identifier assigned to a network interface card and every device on a local network has a unique MAC address.
-
-**Framing**: The data is encapsulated into frames, which include a header and a payload. The header contains the source and destination MAC addresses, as well as other control information like error-checking mechanisms (e.g. CRC). The payload contains the actual data being transmitted between devices.
+- **Functions**: MAC addressing, error detection, frame sequencing
+- **Devices**: Switches
+- **Protocols**: Ethernet, Wi-Fi (802.11)
 
 ### Physical
 
@@ -139,50 +199,37 @@ Components of the Physical Layer:
 
 ## TCP/IP Model
 
+The **TCP/IP Model** (Transmission Control Protocol/Internet Protocol) is the fundamental communication protocol suite used for transmitting data over the internet. It is often compared to the OSI model, but it consists of four layers instead of seven. The TCP/IP model focuses more on standard protocols used for network communications.
+
 ### Application
 
-Corresponds to Layers 5, 6, and 7 of the OSI Model:
+The **Application Layer** in the TCP/IP model corresponds to the upper three layers of the OSI model (Application, Presentation, and Session). It provides high-level protocols and services that network applications use to communicate over the network.
 
-- This layer handles high-level protocols and is where network applications operate (such as web browsers or email clients). It provides an interface between the user and the network, allowing applications to communicate with each other over the internet.
-
-Protocols:
-
-- HTTP/HTTPS: Web browsing
-- FTP: File transfer
-- SMTP: Email
-- DNS: Domain name resolution
+- **Functions**: Handles high-level protocols for communication, such as web browsing, email, and file transfers.
+- **Protocols**: HTTP/HTTPS, FTP, SMTP, DNS
 
 ### Transport
 
-Corresponds to Layer 4 of the OSI Model:
+The **Transport Layer** ensures reliable or unreliable delivery of data between two devices. It corresponds to the Transport Layer in the OSI model and supports both connection-oriented and connectionless communication.
 
-- This layer ensures end-to-end communication between devices, handling control flow, and error checking of data. It manages how data is reliably or unreliably transmitted between devices.
-
-Protocols:
-
-- TCP
-- UDP
+- **Protocols**:
+  - **TCP** (Transmission Control Protocol): Reliable, connection-oriented protocol that guarantees data delivery.
+  - **UDP** (User Datagram Protocol): Fast, connectionless protocol used for applications where speed is prioritized over reliability.
 
 ### Internet
 
-Corresponds to Layer 3 (Network Layer) of the OSI Model:
-This layer is responsible for routing packets across different networks using IP addresses. It ensures that packets are forwarded between devices and across networks until they reach their destination.
+The **Internet Layer** is responsible for addressing, routing, and packaging data for transmission. It corresponds to the OSI Network Layer and uses IP addresses to route packets between networks.
 
-Protocols:
-
-- IP
-- ICMP: `ping` `tracert` (Windows) `traceroute` (Linux/Mac)
+- **Functions**: Logical addressing, routing of packets across networks
+  Protocols:
+- **Protocols**: IP, ICMP; `ping` `tracert` (Windows) `traceroute` (Linux/Mac)
 
 ### Network Access
 
-Corresponds to Layers 1 and 2 of the OSI Model (Physical and Data Link):
+The **Network Access Layer** corresponds to the OSI model's Data Link and Physical Layers. It handles the physical transmission of data and how bits are converted into signals to transmit across the network medium.
 
-- This layer is responsible for how data is physically transmitted across the network medium; Ethernet cables or Wi-Fi. It includes framing, physical addressin, and handling the actual transmission of data bits over network hardware.
-
-Protocols:
-
-- Ethernet: Standard for wired LAN communication.
-- Wi-Fi (IEEE 802.11): Standard for wireless LAN communication.
+- **Functions**: Managing how data is sent over physical media, such as cables or wireless signals
+- **Protocols**: Ethernet, Wi-Fi (802.11)
 
 ## DNS
 
