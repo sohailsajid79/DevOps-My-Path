@@ -119,7 +119,8 @@ on:
 
 ### Components of GitHub Actions:
 
-![workflow-components](./assets/workflow-components.png) [Source](https://learn.microsoft.com/en-us/training/modules/github-actions-automate-tasks/2b-identify-components-workflow)
+![workflow-components](./assets/workflow-components.png)
+[Source](https://learn.microsoft.com/en-us/training/modules/github-actions-automate-tasks/2b-identify-components-workflow)
 
 ### Example Structure:
 
