@@ -344,7 +344,7 @@ In summary, **custom actions** are ideal for reusing individual steps within wor
 
 ## Production-Ready Workflow
 
-I wrote this production-ready workflow to build and push a Docker image to AWS Elastic Container Registry (ECR). It is triggered manually using `workflow_dispatch`. The AWS credentials are configured securely in GitHub Secrets, ensuring the sensitive information is protected. Docker is used to build the image, which is then pushed to the ECR, and finllay the Docker image URL is outputed at the end for reference.
+I wrote this production-ready workflow to build and push a Docker image to AWS Elastic Container Registry (ECR). It is triggered manually using `workflow_dispatch`. The AWS credentials are configured securely in GitHub Secrets, ensuring the sensitive information is protected. Docker is used to build the image, which is then pushed to the ECR, and finally the Docker image URL is outputed at the end for reference.
 
 ```
 name: Build and Push Docker Image to ECR
