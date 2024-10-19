@@ -47,7 +47,7 @@ The loop signifies an ongoing process, where code is continuously improved, inte
 
 **CI/CD Pipeline Stages**
 
-![cicdpipeline](./assets/cicd.png)
+![cicdpipeline](./assets/cicd%20pipeline.png)
 [Source](https://katalon.com/resources-center/blog/ci-cd-pipeline)
 
 The image outlines the CI/CD pipeline step by step, illustrating the flow of changes from the initial code commit to deployment in production:
